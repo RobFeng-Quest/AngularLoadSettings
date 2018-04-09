@@ -9,6 +9,7 @@ import { HeroesService } from './services';
 import { AppRoutingModule } from './app-routing.module';
 import { AppAuthGuard } from './app.authguard';
 import { initializer } from './utils/app-init';
+import { AppLoadModule } from './app-load/app-load.module';
 
 @NgModule({
   declarations: [AppComponent, HeroesComponent, HomeComponent],
@@ -17,16 +18,17 @@ import { initializer } from './utils/app-init';
     HttpClientModule,
     ClarityModule.forRoot(),
     KeycloakAngularModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AppLoadModule
   ],
   providers: [
     HeroesService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializer,
-      multi: true,
-      deps: [KeycloakService]
-    }
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: initializer,
+    //   multi: true,
+    //   deps: [KeycloakService]
+    // }
   ],
   bootstrap: [AppComponent]
 })

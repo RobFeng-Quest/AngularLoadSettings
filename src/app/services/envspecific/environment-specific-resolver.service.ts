@@ -4,7 +4,7 @@ import {
     ActivatedRouteSnapshot
 } from '@angular/router';
 
-import { EnvSpecific } from '../models/env-specific';
+import { EnvSpecific } from './environment-specific';
 import { EnvironmentSpecificService } from './environment-specific.service';
 
 @Injectable()

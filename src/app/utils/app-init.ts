@@ -1,10 +1,10 @@
 import { KeycloakService } from 'keycloak-angular';
 
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
-  console.log(`initializeApp:: Keycloak`);
 
   return (): Promise<any> => {
     return new Promise(async (resolve, reject) => {
+      console.log(`initializeApp:: Keycloak`);
       try {
         await keycloak.init({
           config: {

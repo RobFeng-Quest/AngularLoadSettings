@@ -7,6 +7,10 @@ export function init_app(appLoadService: AppLoadService) {
     return () => appLoadService.initializeApp();
 }
 
+export function init_login(appLoadService: AppLoadService) {
+  return () => appLoadService.initializeLogin();
+}
+
 export function get_settings(appLoadService: AppLoadService) {
     return () => appLoadService.getSettings();
 }
@@ -16,7 +20,8 @@ export function get_settings(appLoadService: AppLoadService) {
   providers: [
     AppLoadService,
     { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
-    { provide: APP_INITIALIZER, useFactory: get_settings, deps: [AppLoadService], multi: true }
+    { provide: APP_INITIALIZER, useFactory: get_settings, deps: [AppLoadService], multi: true },
+    { provide: APP_INITIALIZER, useFactory: init_login, deps: [AppLoadService], multi: true }
   ]
 })
 export class AppLoadModule { }
