@@ -17,6 +17,7 @@ export class EnvironmentSpecificResolver implements Resolve<EnvSpecific> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<EnvSpecific> {
         return this.envSpecificSvc.loadEnvironment()
             .then(es => {
+                console.log('EnvironmentSpecificResolver loaded env');
                 this.envSpecificSvc.setEnvSpecific(es);
                 return this.envSpecificSvc.envSpecific;
             }, error => {

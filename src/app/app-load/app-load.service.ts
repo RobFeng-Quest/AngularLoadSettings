@@ -4,15 +4,16 @@ import 'rxjs/add/operator/toPromise';
 import { KeycloakService } from 'keycloak-angular';
 
 import { APP_SETTINGS } from './settings';
+import { EnvironmentSpecificService } from '../services/envspecific';
 
 @Injectable()
 export class AppLoadService {
 
-  constructor(private httpClient: HttpClient, private keycloak: KeycloakService) { }
+  constructor(private httpClient: HttpClient, private keycloak: KeycloakService, private envSpecificSvc: EnvironmentSpecificService) { }
 
   initializeLogin(): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log(`initializeLogin:: Keycloak`);
+      console.log(`initializeLogin:: Keycloak start`);
 
       try {
         this.keycloak.init({
@@ -27,8 +28,11 @@ export class AppLoadService {
           },
           bearerExcludedUrls: []
         });
-        resolve();
+        // reject('just reject');
+        // resolve();
+        console.log(`initializeLogin:: Keycloak end`);
       } catch (error) {
+        console.log(`initializeLogin:: Keycloak reject`);
         reject(error);
       }
     });
@@ -36,7 +40,7 @@ export class AppLoadService {
 
   initializeApp(): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log(`initializeApp:: inside promise`);
+      console.log(`initializeApp:: inside promise start`);
 
       setTimeout(() => {
         console.log(`initializeApp:: inside setTimeout`);
@@ -44,24 +48,39 @@ export class AppLoadService {
 
         resolve();
       }, 3000);
+      console.log(`initializeApp:: inside promise end`);
     });
   }
 
   getSettings(): Promise<any> {
-    console.log(`getSettings:: before http.get call`);
 
-    const promise = this.httpClient.get('http://private-1ad25-initializeng.apiary-mock.com/settings')
-      .toPromise()
-      .then(settings => {
-        console.log(`getSettings:: Settings from API: `, settings);
+    // const promise = this.httpClient.get('http://private-1ad25-initializeng.apiary-mock.com/settings')
+    //   .toPromise()
+    //   .then(settings => {
+    //     console.log(`getSettings:: Settings from API: `, settings);
 
-        APP_SETTINGS.connectionString = settings[0].value;
-        APP_SETTINGS.defaultImageUrl = settings[1].value;
+    //     APP_SETTINGS.connectionString = settings[0].value;
+    //     APP_SETTINGS.defaultImageUrl = settings[1].value;
 
-        console.log(`getSettings:: APP_SETTINGS: `, APP_SETTINGS);
+    //     console.log(`getSettings:: APP_SETTINGS: `, APP_SETTINGS);
 
-        return settings;
-      });
+    //     return settings;
+    //   });
+   
+    const promise = this.envSpecificSvc.loadEnvironment()
+            .then(es => {
+                console.log('EnvironmentSpecificResolver loaded env');
+                this.envSpecificSvc.setEnvSpecific(es);
+                return this.envSpecificSvc.envSpecific;
+            }, error => {
+                console.log("EnvironmentSpecificResolver error: " + error);
+                return null;
+            });
+
+    // const promise2 = new Promise((resolve, reject) => {
+    //   console.log(`getSettings:: dummy`);
+    //   resolve();
+    // });
 
     return promise;
   }

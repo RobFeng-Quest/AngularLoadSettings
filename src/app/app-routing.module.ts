@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Routes } from '@angular/router';
 import { HeroesComponent, HomeComponent } from './components';
 import { AppAuthGuard } from './app.authguard';
+import { EnvironmentSpecificResolver } from './services/envspecific';
 
 const routes: Routes = [
   {

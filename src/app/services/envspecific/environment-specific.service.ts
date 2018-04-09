@@ -38,7 +38,7 @@ export class EnvironmentSpecificService {
     }
 
     this.envSpecific = es;
-    console.log(this.envSpecific);
+    console.log('EnvironmentSpecificService setted: ' + this.envSpecific.link1);
 
     if (this.envSpecificSubject) {
         this.envSpecificSubject.next(this.envSpecific);

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 import { ClarityModule } from 'clarity-angular';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
@@ -16,6 +17,7 @@ import { AppLoadModule } from './app-load/app-load.module';
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpModule,
     ClarityModule.forRoot(),
     KeycloakAngularModule,
     AppRoutingModule,
