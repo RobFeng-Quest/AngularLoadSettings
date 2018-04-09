@@ -9,14 +9,18 @@ export class AppAuthGuard extends KeycloakAuthGuard {
   }
 
   isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    console.log(`AppAuthGuard:: checking isAccessAllowed`);
+
     return new Promise(async (resolve, reject) => {
       if (!this.authenticated) {
+        console.log(`AppAuthGuard:: go to login`);
         this.keycloakAngular.login();
         return;
       }
 
       const requiredRoles = route.data.roles;
       if (!requiredRoles || requiredRoles.length === 0) {
+        console.log(`AppAuthGuard:: can access (without role)`);
         return resolve(true);
       } else {
         if (!this.roles || this.roles.length === 0) {
