@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakService, KeycloakInitOptions } from 'keycloak-angular';
 
 import { APP_SETTINGS } from './settings';
 import { EnvironmentSpecificService } from '../services/envspecific';
@@ -16,20 +16,29 @@ export class AppLoadService {
       console.log(`initializeLogin:: Keycloak start`);
 
       try {
+        var myConfig= {
+          url: 'https://id-qa.quest.com/auth', // .ie: http://localhost:8080/auth/
+          realm: 'quest', // .ie: master
+          clientId: "spotlight-support-ops-app", // .ie: account
+          
+        };
+
+        // onLoad: 'login-required',
+        // checkLoginIframe: false,
+        //productImage: 'https://www.spotlightessentials.com/images/sign-in-up-left-panel-v2.svg'
+        var myInitOptions: any = {
+          
+        onLoad: 'login-required',
+        checkLoginIframe: false,
+        productImage: 'https://www.spotlightessentials.com/images/sign-in-up-left-panel-v2.svg'
+        };
         this.keycloak.init({
-          config: {
-            url: 'https://id-qa.quest.com/auth', // .ie: http://localhost:8080/auth/
-            realm: 'quest', // .ie: master
-            clientId: "spotlight-support-ops-app" // .ie: account
-          },
-          initOptions: {
-            onLoad: 'login-required',
-            checkLoginIframe: false
-          },
+          config: myConfig,
+          initOptions: myInitOptions,
           bearerExcludedUrls: []
         });
         // reject('just reject');
-        // resolve();
+        resolve();
         console.log(`initializeLogin:: Keycloak end`);
       } catch (error) {
         console.log(`initializeLogin:: Keycloak reject`);
@@ -71,7 +80,6 @@ export class AppLoadService {
             .then(es => {
                 console.log('EnvironmentSpecificResolver loaded env');
                 this.envSpecificSvc.setEnvSpecific(es);
-                return this.envSpecificSvc.envSpecific;
             }, error => {
                 console.log("EnvironmentSpecificResolver error: " + error);
                 return null;
